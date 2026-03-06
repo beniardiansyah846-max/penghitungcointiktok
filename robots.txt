@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://livegiftcalculator.com/sitemap.xml
