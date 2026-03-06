@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta name="google-site-verification" content="MYvilaVNamDvV9cZpVfeoUEDUKCqnE66Tzwu0O-GvXE" />
+    <meta name="google-adsense-account" content="ca-pub-8769439702903347">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8769439702903347"
+     crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Live Gift Calculator</title>
+    <meta name="description" content="Kalkulator profesional untuk menghitung nilai TikTok Coins dan Level">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: {
+                            900: '#0a0a0f',
+                            800: '#12121a',
+                            700: '#1a1a25',
+                            600: '#252536',
+                        },
+                        accent: {
+                            DEFAULT: '#6366f1',
+                            light: '#818cf8',
+                            dark: '#4f46e5',
+                        },
+                        gold: {
+                            DEFAULT: '#fbbf24',
+                            light: '#fcd34d',
+                            dark: '#f59e0b',
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.3s ease-out',
+                        'slide-up': 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #0a0a0f 0%, #12121a 50%, #1a1a25 100%);
+            min-height: 100vh;
+            font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .glass-panel {
+            background: rgba(26, 26, 37, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+        
+        .glass-button {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(79, 70, 229, 0.1) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass-button:hover {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(79, 70, 229, 0.2) 100%);
+            border-color: rgba(99, 102, 241, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.25);
+        }
+        
+        .glass-button-gold {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(245, 158, 11, 0.08) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+        
+        .glass-button-gold:hover {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.25) 0%, rgba(245, 158, 11, 0.15) 100%);
+            border-color: rgba(251, 191, 36, 0.5);
+            box-shadow: 0 8px 24px rgba(251, 191, 36, 0.2);
+        }
+        
+        .input-field {
+            background: rgba(37, 37, 54, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            border-color: rgba(99, 102, 241, 0.5);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            outline: none;
+        }
+        
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(12px);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #fbbf24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .result-value {
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -0.02em;
+        }
+        
+        .blur-backdrop {
+            filter: blur(8px);
+            transition: filter 0.3s ease;
+        }
+    </style>
+</head>
+<body class="text-white antialiased selection:bg-accent/30 selection:text-white">
+
+    <!-- Background Effects -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden">
+        <div class="absolute -top-40 -right-40 w-96 h-96 bg-accent/20 rounded-full blur-[100px] opacity-30 animate-pulse-slow"></div>
+        <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-gold/10 rounded-full blur-[100px] opacity-30 animate-pulse-slow" style="animation-delay: 1.5s;"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-accent/5 rounded-full blur-[120px]"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div id="mainContainer" class="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 transition-all duration-300">
+        
+        <!-- Logo / Title Section -->
+        <div class="text-center mb-12 animate-slide-up">
+            <div class="inline-flex items-center justify-center w-16 h-16 mb-6 rounded-2xl glass-panel">
+                <i data-lucide="gift" class="w-8 h-8 text-accent-light"></i>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-bold mb-2 tracking-tight">
+                LIVE GIFT<br>
+                <span class="gradient-text">CALCULATOR</span>
+            </h1>
+            <p class="text-white/50 text-sm">Hitung coin & level TikTok dengan mudah</p>
+        </div>
+
+        <!-- Home Buttons -->
+        <div class="w-full max-w-sm space-y-4 animate-slide-up" style="animation-delay: 0.1s;">
+            <button onclick="openModal('coinModal')" class="w-full min-h-[52px] glass-button py-4 px-6 rounded-2xl flex items-center justify-center gap-3 group active:scale-[0.99]">
+                <i data-lucide="coins" class="w-5 h-5 text-accent-light group-hover:scale-110 transition-transform"></i>
+                <span class="font-semibold">PENGHASILAN HOST</span>
+            </button>
+            
+            <button onclick="openModal('levelModal')" class="w-full min-h-[52px] glass-button-gold py-4 px-6 rounded-2xl flex items-center justify-center gap-3 group active:scale-[0.99]">
+                <i data-lucide="trending-up" class="w-5 h-5 text-gold-light group-hover:scale-110 transition-transform"></i>
+                <span class="font-semibold">LEVEL TIKTOK</span>
+            </button>
+
+            <button onclick="openModal('rechargeModal')" class="w-full min-h-[52px] glass-button py-4 px-6 rounded-2xl flex items-center justify-center gap-3 group active:scale-[0.99]">
+                <i data-lucide="zap" class="w-5 h-5 text-accent-light group-hover:scale-110 transition-transform"></i>
+                <span class="font-semibold">TOP UP COIN</span>
+            </button>
+
+            <button onclick="openModal('checkCoinModal')" class="w-full min-h-[52px] glass-button-gold py-4 px-6 rounded-2xl flex items-center justify-center gap-3 group active:scale-[0.99]">
+                <i data-lucide="wallet" class="w-5 h-5 text-gold-light group-hover:scale-110 transition-transform"></i>
+                <span class="font-semibold">CHECK COIN</span>
+            </button>
+        </div>
+
+        <div class="w-full max-w-sm mt-6 animate-slide-up" style="animation-delay: 0.15s;">
+            <ins class="adsbygoogle"
+                 id="mainAdsUnit"
+                 style="display:block"
+                 data-ad-client="ca-pub-8769439702903347"
+                  data-ad-slot="7498246138"
+                  data-ad-format="autorelaxed"
+                 data-full-width-responsive="true"></ins>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-12 md:mt-16 text-center text-[11px] md:text-xs text-white/30 animate-slide-up leading-relaxed" style="animation-delay: 0.2s;">
+            <p class="mb-1.5">
+                <a href="terms.html" class="hover:text-white/60 transition-colors">Terms</a>
+                <span class="px-1">|</span>
+                <a href="privacy.html" class="hover:text-white/60 transition-colors">Privacy</a>
+                <span class="px-1">|</span>
+                <a href="contact.html" class="hover:text-white/60 transition-colors">Contact</a>
+            </p>
+            <p class="mb-1.5">
+                <button id="openCookieSettings" class="hover:text-white/60 transition-colors">Ubah pengaturan cookie</button>
+            </p>
+            <p class="mb-1.5">by benn</p>
+            <p>&copy; 2026 Live Gift Calculator</p>
+        </div>
+    </div>
+
+    <!-- COOKIE CONSENT -->
+    <div id="cookieBanner" class="fixed bottom-4 left-4 right-4 z-[60] hidden">
+        <div class="max-w-2xl mx-auto glass-panel rounded-2xl p-4 md:p-5">
+            <p class="text-sm text-white/80 leading-relaxed mb-3">
+                Website ini menggunakan cookie untuk analitik dasar dan penayangan iklan. Dengan menekan <span class="font-semibold text-white">Setuju</span>, Anda mengizinkan penggunaan cookie sesuai
+                <a href="privacy.html" class="text-accent-light hover:text-accent transition-colors">Privacy Policy</a>.
+            </p>
+            <div class="flex items-center justify-end gap-2">
+                <button id="rejectCookiesBtn" class="px-3 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-xs md:text-sm text-white/80 transition-colors">
+                    Tolak
+                </button>
+                <button id="acceptCookiesBtn" class="px-3 py-2 rounded-lg bg-accent hover:bg-accent-dark text-xs md:text-sm font-semibold text-white transition-colors">
+                    Setuju
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- COIN MODAL -->
+    <div id="coinModal" class="fixed inset-0 z-50 hidden">
+        <div class="modal-overlay absolute inset-0" onclick="closeModal('coinModal')"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-md">
+            <div class="glass-panel rounded-3xl p-6 md:p-8 relative animate-slide-up">
+                <!-- Close Button -->
+                <button onclick="closeModal('coinModal')" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors">
+                    <i data-lucide="x" class="w-4 h-4 text-white/60"></i>
+                </button>
+
+                <div class="text-center mb-6">
+                    <div class="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center mx-auto mb-3">
+                        <i data-lucide="coins" class="w-6 h-6 text-accent-light"></i>
+                    </div>
+                    <h2 class="text-xl font-bold">PENGHASILAN HOST</h2>
+                    <p class="text-sm text-white/50">Estimasi pendapatan setelah potongan 50%</p>
+                </div>
+
+                <input type="number" id="coinInput" placeholder="Contoh: 10000" 
+                    class="w-full input-field py-4 px-4 rounded-xl text-center text-lg font-medium text-white placeholder-white/30 mb-4" 
+                    onkeypress="if(event.key==='Enter') hitungCoin()">
+
+                <button onclick="hitungCoin()" class="w-full min-h-[48px] glass-button py-3.5 rounded-xl font-semibold mb-6 flex items-center justify-center gap-2 active:scale-[0.99]">
+                    <i data-lucide="calculator" class="w-4 h-4"></i>
+                    Hitung
+                </button>
+
+                <div class="glass-panel rounded-2xl p-6 text-center relative overflow-hidden">
+                    <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-accent to-transparent"></div>
+                    <p class="text-sm text-white/60 mb-1 flex items-center justify-center gap-2">
+                        <i data-lucide="banknote" class="w-4 h-4 text-gold"></i>
+                        Estimasi Uang
+                    </p>
+                    <div id="coinResult" class="result-value text-3xl md:text-4xl font-bold gradient-text opacity-0 translate-y-2 transition-all duration-500">
+                        Rp 0
+                    </div>
+                    <p class="text-xs text-white/40 mt-3 pt-2 border-t border-white/5">
+                        Coin × Rp 250 (harga beli) × 50% (potongan TikTok) = Pendapatan Host
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LEVEL MODAL -->
+    <div id="levelModal" class="fixed inset-0 z-50 hidden">
+        <div class="modal-overlay absolute inset-0" onclick="closeModal('levelModal')"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-md max-h-[90vh] overflow-y-auto no-scrollbar">
+            <div class="glass-panel rounded-3xl p-6 md:p-8 relative animate-slide-up">
+                <!-- Close Button -->
+                <button onclick="closeModal('levelModal')" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors">
+                    <i data-lucide="x" class="w-4 h-4 text-white/60"></i>
+                </button>
+
+                <div class="text-center mb-6">
+                    <div class="w-12 h-12 rounded-xl bg-gold/20 flex items-center justify-center mx-auto mb-3">
+                        <i data-lucide="trending-up" class="w-6 h-6 text-gold"></i>
+                    </div>
+                    <h2 class="text-xl font-bold">LEVEL TIKTOK</h2>
+                    <p class="text-sm text-white/50">Estimasi coin untuk level 1-50</p>
+                </div>
+
+                <input type="number" id="levelInput" placeholder="Masukkan Level (1-50)" min="1" max="50"
+                    class="w-full input-field py-4 px-4 rounded-xl text-center text-lg font-medium text-white placeholder-white/30 mb-4" 
+                    onkeypress="if(event.key==='Enter') hitungLevel()">
+
+                <button onclick="hitungLevel()" class="w-full min-h-[48px] glass-button-gold py-3.5 rounded-xl font-semibold mb-6 flex items-center justify-center gap-2 text-gold-light active:scale-[0.99]">
+                    <i data-lucide="calculator" class="w-4 h-4"></i>
+                    Hitung
+                </button>
+
+                <!-- Results -->
+                <div class="space-y-4">
+                    <div class="glass-panel rounded-2xl p-5 text-center relative overflow-hidden">
+                        <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-accent to-transparent"></div>
+                        <p class="text-sm text-white/60 mb-1 flex items-center justify-center gap-2">
+                            <i data-lucide="coins" class="w-4 h-4 text-accent-light"></i>
+                            Total Coin Dibutuhkan
+                        </p>
+                        <div id="levelCoin" class="result-value text-2xl md:text-3xl font-bold text-white opacity-0 translate-y-2 transition-all duration-500">
+                            0
+                        </div>
+                    </div>
+
+                    <div class="glass-panel rounded-2xl p-5 text-center relative overflow-hidden">
+                        <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-gold to-transparent"></div>
+                        <p class="text-sm text-white/60 mb-1 flex items-center justify-center gap-2">
+                            <i data-lucide="banknote" class="w-4 h-4 text-gold"></i>
+                            Estimasi Uang
+                        </p>
+                        <div id="levelMoney" class="result-value text-2xl md:text-3xl font-bold gradient-text opacity-0 translate-y-2 transition-all duration-500">
+                            Rp 0
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RECHARGE MODAL -->
+    <div id="rechargeModal" class="fixed inset-0 z-50 hidden">
+        <div class="modal-overlay absolute inset-0" onclick="closeModal('rechargeModal')"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-md">
+            <div class="glass-panel rounded-3xl p-6 md:p-8 relative animate-slide-up">
+                <!-- Close Button -->
+                <button onclick="closeModal('rechargeModal')" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors">
+                    <i data-lucide="x" class="w-4 h-4 text-white/60"></i>
+                </button>
+
+                <div class="text-center mb-6">
+                    <div class="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center mx-auto mb-3">
+                        <i data-lucide="zap" class="w-6 h-6 text-accent-light"></i>
+                    </div>
+                    <h2 class="text-xl font-bold">TOP UP COIN</h2>
+                    <p class="text-sm text-white/50">Top up coin melalui halaman resmi TikTok</p>
+                </div>
+
+                     <a href="https://www.tiktok.com/coin" target="_blank" rel="noopener noreferrer"
+                         class="w-full min-h-[48px] glass-button py-3.5 rounded-xl font-semibold flex items-center justify-center gap-2 active:scale-[0.99]">
+                    <i data-lucide="external-link" class="w-4 h-4"></i>
+                    Buka Halaman Recharge
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHECK COIN MODAL -->
+    <div id="checkCoinModal" class="fixed inset-0 z-50 hidden">
+        <div class="modal-overlay absolute inset-0" onclick="closeModal('checkCoinModal')"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-md">
+            <div class="glass-panel rounded-3xl p-6 md:p-8 relative animate-slide-up">
+                <button onclick="closeModal('checkCoinModal')" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors">
+                    <i data-lucide="x" class="w-4 h-4 text-white/60"></i>
+                </button>
+
+                <div class="text-center mb-6">
+                    <div class="w-12 h-12 rounded-xl bg-gold/20 flex items-center justify-center mx-auto mb-3">
+                        <i data-lucide="wallet" class="w-6 h-6 text-gold"></i>
+                    </div>
+                    <h2 class="text-xl font-bold">CHECK COIN</h2>
+                    <p class="text-sm text-white/50">Cek total uang yang sudah dihabiskan untuk beli coin</p>
+                </div>
+
+                <input type="text" id="checkCoinInput" placeholder="Contoh: 150.000" inputmode="numeric"
+                    class="w-full input-field py-4 px-4 rounded-xl text-center text-lg font-medium text-white placeholder-white/30 mb-4"
+                    oninput="formatNumberInput(this)"
+                    onkeypress="if(event.key==='Enter') hitungCheckCoin()">
+
+                <button onclick="hitungCheckCoin()" class="w-full min-h-[48px] glass-button-gold py-3.5 rounded-xl font-semibold mb-6 flex items-center justify-center gap-2 text-gold-light active:scale-[0.99]">
+                    <i data-lucide="calculator" class="w-4 h-4"></i>
+                    Hitung
+                </button>
+
+                <div class="glass-panel rounded-2xl p-5 text-center relative overflow-hidden">
+                    <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-gold to-transparent"></div>
+                    <p class="text-sm text-white/60 mb-1 flex items-center justify-center gap-2">
+                        <i data-lucide="banknote" class="w-4 h-4 text-gold"></i>
+                        Total Uang Dihabiskan
+                    </p>
+                    <div id="checkCoinMoney" class="result-value text-2xl md:text-3xl font-bold gradient-text opacity-0 translate-y-2 transition-all duration-500">
+                        Rp 0
+                    </div>
+                    <p class="text-xs text-white/40 mt-3 pt-2 border-t border-white/5">
+                        Coin × Rp 250 = Total biaya pembelian coin
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Cookie Consent + Ad Init
+        const COOKIE_CONSENT_KEY = 'lgc_cookie_consent';
+        let isAdsInitialized = false;
+
+        function initAdsIfAllowed() {
+            if (isAdsInitialized) return;
+            try {
+                const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
+                if (consent === 'accepted') {
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                    isAdsInitialized = true;
+                }
+            } catch (error) {
+                // Jika localStorage diblokir, jangan inisialisasi ads otomatis
+            }
+        }
+
+        function setCookieConsent(value) {
+            try {
+                localStorage.setItem(COOKIE_CONSENT_KEY, value);
+            } catch (error) {
+                // Abaikan jika storage tidak tersedia
+            }
+
+            const banner = document.getElementById('cookieBanner');
+            if (banner) banner.classList.add('hidden');
+
+            if (value === 'accepted') {
+                initAdsIfAllowed();
+            }
+        }
+
+        function setupCookieBanner() {
+            const banner = document.getElementById('cookieBanner');
+            const acceptBtn = document.getElementById('acceptCookiesBtn');
+            const rejectBtn = document.getElementById('rejectCookiesBtn');
+            const openCookieSettingsBtn = document.getElementById('openCookieSettings');
+
+            if (!banner || !acceptBtn || !rejectBtn) return;
+
+            let consent = null;
+            try {
+                consent = localStorage.getItem(COOKIE_CONSENT_KEY);
+            } catch (error) {
+                consent = null;
+            }
+
+            if (!consent) {
+                banner.classList.remove('hidden');
+            } else if (consent === 'accepted') {
+                initAdsIfAllowed();
+            }
+
+            acceptBtn.addEventListener('click', () => setCookieConsent('accepted'));
+            rejectBtn.addEventListener('click', () => setCookieConsent('rejected'));
+
+            if (openCookieSettingsBtn) {
+                openCookieSettingsBtn.addEventListener('click', () => {
+                    banner.classList.remove('hidden');
+                });
+            }
+        }
+
+        setupCookieBanner();
+
+        // Modal Functions
+        function openModal(id) {
+            document.getElementById('mainContainer').classList.add('blur-backdrop');
+            const modal = document.getElementById(id);
+            modal.classList.remove('hidden');
+            // Focus input setelah modal terbuka
+            setTimeout(() => {
+                const input = modal.querySelector('input');
+                if(input) input.focus();
+            }, 100);
+        }
+
+        function closeModal(id) {
+            document.getElementById('mainContainer').classList.remove('blur-backdrop');
+            document.getElementById(id).classList.add('hidden');
+            // Reset inputs dan results
+            const modal = document.getElementById(id);
+            const input = modal.querySelector('input');
+            if(input) input.value = '';
+            
+            // Reset result displays
+            const results = modal.querySelectorAll('[id$="Result"], [id$="Coin"], [id$="Money"]');
+            results.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(8px)';
+                if(el.id.includes('Coin') && !el.id.includes('Money')) {
+                    el.innerText = '0';
+                } else {
+                    el.innerText = 'Rp 0';
+                }
+            });
+        }
+
+        // Animated Count Function
+        function animateValue(elementId, end, isCurrency = true) {
+            const el = document.getElementById(elementId);
+            
+            // Reset animation
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(8px)';
+            
+            // Trigger reflow
+            void el.offsetWidth;
+            
+            // Start animation
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+            
+            const duration = 800;
+            const start = 0;
+            const startTime = performance.now();
+
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Easing function (ease-out)
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                const current = Math.floor(start + (end - start) * easeOut);
+                
+                if (isCurrency) {
+                    el.innerText = 'Rp ' + current.toLocaleString('id-ID');
+                } else {
+                    el.innerText = current.toLocaleString('id-ID');
+                }
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+
+        // Format number with dots (Indonesian format: 1.000, 10.000, 100.000)
+        function formatNumberInput(input) {
+            // Remove non-digit characters first
+            let value = input.value.replace(/\D/g, '');
+            
+            // Add dots every 3 digits from the right
+            value = value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            
+            input.value = value;
+        }
+
+        // Check Coin Calculation
+        function hitungCoin() {
+            // Remove dots before parsing
+            const rawValue = document.getElementById('coinInput').value.replace(/\./g, '');
+            const coin = parseInt(rawValue);
+            
+            if (!coin || coin <= 0) {
+                alert('Masukkan jumlah coin yang valid');
+                return;
+            }
+            
+            // Perhitungan: 1 coin = Rp 250 (harga beli), estimasi uang = 50% dari nilai beli
+            const rupiah = Math.floor(coin * 250 * 0.5);
+            animateValue('coinResult', rupiah, true);
+        }
+
+        // Check Coin Calculation
+        function hitungCheckCoin() {
+            const rawValue = document.getElementById('checkCoinInput').value.replace(/\./g, '');
+            const coin = parseInt(rawValue);
+
+            if (!coin || coin <= 0) {
+                alert('Masukkan jumlah coin yang valid');
+                return;
+            }
+
+            const totalSpent = coin * 250;
+            animateValue('checkCoinMoney', totalSpent, true);
+        }
+
+        // Level Table Data
+        const levelTable = {
+            1: 1, 2: 8, 3: 18, 4: 34, 5: 56,
+            6: 90, 7: 140, 8: 220, 9: 340, 10: 530,
+            11: 820, 12: 1260, 13: 1920, 14: 2840, 15: 4340,
+            16: 6420, 17: 9280, 18: 13500, 19: 19400, 20: 27800,
+            21: 39600, 22: 54600, 23: 75800, 24: 105000, 25: 144000,
+            26: 196000, 27: 265000, 28: 357000, 29: 578000, 30: 637000,
+            31: 845000, 32: 1120000, 33: 1470000, 34: 1920000, 35: 2500000,
+            36: 3230000, 37: 4180000, 38: 5430000, 39: 6890000, 40: 8780000,
+            41: 11200000, 42: 14100000, 43: 22300000, 44: 30200000, 45: 37500000,
+            46: 47500000, 47: 56700000, 48: 67500000, 49: 75000000, 50: 97500000
+        };
+
+        // Level Calculation
+        function hitungLevel() {
+            const level = parseInt(document.getElementById('levelInput').value);
+            const coin = levelTable[level];
+            
+            if (!coin) {
+                alert('Masukkan level 1 sampai 50');
+                return;
+            }
+            
+            // Animate coin amount (bukan currency, jadi tanpa Rp)
+            animateValue('levelCoin', coin, false);
+            
+            // Animate money estimation (dengan Rp)
+            const rupiah = coin * 250;
+            animateValue('levelMoney', rupiah, true);
+        }
+
+        // Prevent zoom on double tap (iOS)
+        document.addEventListener('dblclick', function(event) {
+            event.preventDefault();
+        }, { passive: false });
+    </script>
+    <!-- SEO SECTION: HARGA GIFT TIKTOK -->
+    <section class="relative z-10 px-4 sm:px-6 pb-12 md:pb-16 pt-6">
+        <div class="w-full max-w-4xl mx-auto glass-panel rounded-3xl p-5 sm:p-6 md:p-8">
+            <div class="text-center mb-6 md:mb-8">
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mb-3">
+                    Harga Gift TikTok Lengkap
+                </h2>
+                <p class="text-sm sm:text-base text-white/70 leading-relaxed max-w-3xl mx-auto">
+                    Daftar berikut membantu kamu melihat estimasi harga gift TikTok berdasarkan jumlah coin. Nilai rupiah dihitung dari asumsi 1 coin = Rp250, sehingga kamu bisa lebih mudah memperkirakan budget saat live dan pengiriman gift.
+                </p>
+            </div>
+
+            <div class="overflow-x-auto rounded-2xl border border-white/10 bg-dark-800/60">
+                <table class="min-w-full text-left text-sm sm:text-base">
+                    <thead class="bg-white/5 border-b border-white/10">
+                        <tr>
+                            <th class="px-4 sm:px-5 py-3 font-semibold text-white/90">Nama Gift</th>
+                            <th class="px-4 sm:px-5 py-3 font-semibold text-white/90">Jumlah Coin</th>
+                            <th class="px-4 sm:px-5 py-3 font-semibold text-white/90">Estimasi Harga Rupiah</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/10">
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="px-4 sm:px-5 py-3">Rose</td>
+                            <td class="px-4 sm:px-5 py-3">1 coin</td>
+                            <td class="px-4 sm:px-5 py-3">Rp250</td>
+                        </tr>
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="px-4 sm:px-5 py-3">TikTok</td>
+                            <td class="px-4 sm:px-5 py-3">1 coin</td>
+                            <td class="px-4 sm:px-5 py-3">Rp250</td>
+                        </tr>
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="px-4 sm:px-5 py-3">Love Bang</td>
+                            <td class="px-4 sm:px-5 py-3">25 coin</td>
+                            <td class="px-4 sm:px-5 py-3">Rp6.250</td>
+                        </tr>
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="px-4 sm:px-5 py-3">Galaxy</td>
+                            <td class="px-4 sm:px-5 py-3">1000 coin</td>
+                            <td class="px-4 sm:px-5 py-3">Rp250.000</td>
+                        </tr>
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="px-4 sm:px-5 py-3">Lion</td>
+                            <td class="px-4 sm:px-5 py-3">29999 coin</td>
+                            <td class="px-4 sm:px-5 py-3">Rp7.499.750</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="mt-6 text-sm sm:text-base text-white/65 leading-relaxed">
+                Jika kamu mencari informasi harga gift TikTok, gift TikTok berapa rupiah, atau harga coin TikTok, tabel ini bisa jadi referensi cepat. Kamu juga bisa memakai kalkulator di atas untuk konversi coin TikTok ke rupiah dan menghitung estimasi penghasilan live TikTok secara lebih praktis.
+            </p>
+        </div>
+    </section>
+<script src="https://deepsite.hf.co/deepsite-badge.js"></script>
+</body>
+</html>
